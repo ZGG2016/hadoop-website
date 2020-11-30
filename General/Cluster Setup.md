@@ -4,9 +4,9 @@
 
 ## 1、Purpose
 
-<font color="grey">This document describes how to install and configure Hadoop clusters ranging from a few nodes to extremely large clusters with thousands of nodes. To play with Hadoop, you may first want to install it on a single machine (see [Single Node Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)).</font>
+> This document describes how to install and configure Hadoop clusters ranging from a few nodes to extremely large clusters with thousands of nodes. To play with Hadoop, you may first want to install it on a single machine (see [Single Node Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)).
 
-<font color="grey">This document does not cover advanced topics such as [Security](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SecureMode.html) or High Availability.</font>
+> This document does not cover advanced topics such as [Security](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SecureMode.html) or High Availability.
 
 本文档介绍如何安装配置hadoop集群，但不涉及安全和高可用相关的高阶内容。
 
@@ -17,11 +17,11 @@
 
 ## 3、Installation
 
-<font color="grey">Installing a Hadoop cluster typically involves unpacking the software on all the machines in the cluster or installing it via a packaging system as appropriate for your operating system. It is important to divide up the hardware into functions.</font>
+> Installing a Hadoop cluster typically involves unpacking the software on all the machines in the cluster or installing it via a packaging system as appropriate for your operating system. It is important to divide up the hardware into functions.
 
-<font color="grey">Typically one machine in the cluster is designated as the NameNode and another machine as the ResourceManager, exclusively. These are the masters. Other services (such as Web App Proxy Server and MapReduce Job History server) are usually run either on dedicated hardware or on shared infrastructure, depending upon the load.</font>
+> Typically one machine in the cluster is designated as the NameNode and another machine as the ResourceManager, exclusively. These are the masters. Other services (such as Web App Proxy Server and MapReduce Job History server) are usually run either on dedicated hardware or on shared infrastructure, depending upon the load.
 
-<font color="grey">The rest of the machines in the cluster act as both DataNode and NodeManager. These are the workers.</font>
+> The rest of the machines in the cluster act as both DataNode and NodeManager. These are the workers.
 
 将硬件划分为不同的功能是很重要的。
 
@@ -31,13 +31,13 @@
 
 ## 4、Configuring Hadoop in Non-Secure Mode
 
-<font color="grey">Hadoop’s Java configuration is driven by two types of important configuration files:</font>
+> Hadoop’s Java configuration is driven by two types of important configuration files:
 
-<font color="grey">Read-only default configuration - core-default.xml, hdfs-default.xml, yarn-default.xml and mapred-default.xml.</font>
+> Read-only default configuration - core-default.xml, hdfs-default.xml, yarn-default.xml and mapred-default.xml.
 
-<font color="grey">Site-specific configuration - etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml, etc/hadoop/yarn-site.xml and etc/hadoop/mapred-site.xml.</font>
+> Site-specific configuration - etc/hadoop/core-site.xml, etc/hadoop/hdfs-site.xml, etc/hadoop/yarn-site.xml and etc/hadoop/mapred-site.xml.
 
-<font color="grey">Additionally, you can control the Hadoop scripts found in the bin/ directory of the distribution, by setting site-specific values via the etc/hadoop/hadoop-env.sh and etc/hadoop/yarn-env.sh.</font>
+> Additionally, you can control the Hadoop scripts found in the bin/ directory of the distribution, by setting site-specific values via the etc/hadoop/hadoop-env.sh and etc/hadoop/yarn-env.sh.
 
 Hadoop 的 Java 配置是由如下两类文件驱动的：
 
@@ -47,9 +47,9 @@ Hadoop 的 Java 配置是由如下两类文件驱动的：
 
 还可以**通过设置 `etc/hadoop/hadoop-env.sh` 和`etc/hadoop/yarn-env.sh` 中的特定值，来控制`bin/` 目录下的 Hadoop 脚本**。
 
-<font color="grey">To configure the Hadoop cluster you will need to configure the environment in which the Hadoop daemons execute as well as the configuration parameters for the Hadoop daemons.</font>
+> To configure the Hadoop cluster you will need to configure the environment in which the Hadoop daemons execute as well as the configuration parameters for the Hadoop daemons.
 
-<font color="grey">HDFS daemons are NameNode, SecondaryNameNode, and DataNode. YARN daemons are ResourceManager, NodeManager, and WebAppProxy. If MapReduce is to be used, then the MapReduce Job History Server will also be running. For large installations, these are generally running on separate hosts.</font>
+> HDFS daemons are NameNode, SecondaryNameNode, and DataNode. YARN daemons are ResourceManager, NodeManager, and WebAppProxy. If MapReduce is to be used, then the MapReduce Job History Server will also be running. For large installations, these are generally running on separate hosts.
 
 要配置 Hadoop 集群，需要配置执行 Hadoop 守护进程的环境以及配置参数。
 
@@ -63,11 +63,11 @@ Hadoop 的 Java 配置是由如下两类文件驱动的：
 
 ### 4.1、Configuring Environment of Hadoop Daemons
 
-<font color="grey">Administrators should use the etc/hadoop/hadoop-env.sh and optionally the etc/hadoop/mapred-env.sh and etc/hadoop/yarn-env.sh scripts to do site-specific customization of the Hadoop daemons’ process environment.</font>
+> Administrators should use the etc/hadoop/hadoop-env.sh and optionally the etc/hadoop/mapred-env.sh and etc/hadoop/yarn-env.sh scripts to do site-specific customization of the Hadoop daemons’ process environment.
 
-<font color="grey">At the very least, you must specify the JAVA_HOME so that it is correctly defined on each remote node.</font>
+> At the very least, you must specify the JAVA_HOME so that it is correctly defined on each remote node.
 
-<font color="grey">Administrators can configure individual daemons using the configuration options shown below in the table:</font>
+> Administrators can configure individual daemons using the configuration options shown below in the table:
 
 管理员应该通过设置 `etc/hadoop/hadoop-env.sh`，和可选的 `etc/hadoop/mapred-env.sh`、`etc/hadoop/yarn-env.sh ` 脚本来对 Hadoop 守护进程环境进行个性化设置。
 
@@ -86,7 +86,7 @@ NodeManager | YARN_NODEMANAGER_OPTS
 WebAppProxy | YARN_PROXYSERVER_OPTS
 Map Reduce Job History Server | MAPRED_HISTORYSERVER_OPTS
 
-<font color="grey">For example, To configure Namenode to use parallelGC and a 4GB Java Heap, the following statement should be added in hadoop-env.sh :</font>
+> For example, To configure Namenode to use parallelGC and a 4GB Java Heap, the following statement should be added in hadoop-env.sh :
 
 例如，在 `hadoop-env.sh` 中，配置 Namenode 使用 parallelGC 和 4GB 的 Java 堆内存：
 
@@ -94,13 +94,13 @@ Map Reduce Job History Server | MAPRED_HISTORYSERVER_OPTS
 
 See `etc/hadoop/hadoop-env.sh` for other examples.
 
-<font color="grey">Other useful configuration parameters that you can customize include:</font>
+> Other useful configuration parameters that you can customize include:
 
-<font color="grey">HADOOP_PID_DIR - The directory where the daemons’ process id files are stored.</font>
+> HADOOP_PID_DIR - The directory where the daemons’ process id files are stored.
 
-<font color="grey">HADOOP_LOG_DIR - The directory where the daemons’ log files are stored. Log files are automatically created if they don’t exist.</font>
+> HADOOP_LOG_DIR - The directory where the daemons’ log files are stored. Log files are automatically created if they don’t exist.
 
-<font color="grey">HADOOP_HEAPSIZE_MAX - The maximum amount of memory to use for the Java heapsize. Units supported by the JVM are also supported here. If no unit is present, it will be assumed the number is in megabytes. By default, Hadoop will let the JVM determine how much to use. This value can be overriden on a per-daemon basis using the appropriate `_OPTS` variable listed above. For example, setting HADOOP_HEAPSIZE_MAX=1g and HADOOP_NAMENODE_OPTS="-Xmx5g" will configure the NameNode with 5GB heap.</font>
+> HADOOP_HEAPSIZE_MAX - The maximum amount of memory to use for the Java heapsize. Units supported by the JVM are also supported here. If no unit is present, it will be assumed the number is in megabytes. By default, Hadoop will let the JVM determine how much to use. This value can be overriden on a per-daemon basis using the appropriate `_OPTS` variable listed above. For example, setting HADOOP_HEAPSIZE_MAX=1g and HADOOP_NAMENODE_OPTS="-Xmx5g" will configure the NameNode with 5GB heap.
 
 你可以个性化的其他有用配置项有：
 
@@ -120,9 +120,9 @@ See `etc/hadoop/hadoop-env.sh` for other examples.
 
 大多数情况下，你可以指定 `HADOOP_PID_DIR` 和 `HADOOP_LOG_DIR` ，因为这两个设置仅能被用户设置。否则就有 symlink 攻击的可能。
 
-<font color="grey">In most cases, you should specify the HADOOP_PID_DIR and HADOOP_LOG_DIR directories such that they can only be written to by the users that are going to run the hadoop daemons. Otherwise there is the potential for a symlink attack.</font>
+> In most cases, you should specify the HADOOP_PID_DIR and HADOOP_LOG_DIR directories such that they can only be written to by the users that are going to run the hadoop daemons. Otherwise there is the potential for a symlink attack.
 
-<font color="grey">It is also traditional to configure HADOOP_HOME in the system-wide shell environment configuration. For example, a simple script inside /etc/profile.d:</font>
+> It is also traditional to configure HADOOP_HOME in the system-wide shell environment configuration. For example, a simple script inside /etc/profile.d:
 
 也需要在系统层面配置 `HADOOP_HOME` 变量，例如，`/etc/profile.d` 下的一个简单脚本：
 
@@ -131,7 +131,7 @@ See `etc/hadoop/hadoop-env.sh` for other examples.
 
 ### 4.2、Configuring the Hadoop Daemons
 
-<font color="grey">This section deals with important parameters to be specified in the given configuration files:</font>
+> This section deals with important parameters to be specified in the given configuration files:
 
 #### 4.2.1、etc/hadoop/core-site.xml
 
@@ -230,9 +230,9 @@ mapreduce.jobhistory.done-dir | /mr-history/done | Directory where history files
 
 ## 5、Monitoring Health of NodeManagers
 
-<font color="grey">Hadoop provides a mechanism by which administrators can configure the NodeManager to run an administrator supplied script periodically to determine if a node is healthy or not.</font>
+> Hadoop provides a mechanism by which administrators can configure the NodeManager to run an administrator supplied script periodically to determine if a node is healthy or not.
 
-<font color="grey">Administrators can determine if the node is in a healthy state by performing any checks of their choice in the script. If the script detects the node to be in an unhealthy state, it must print a line to standard output beginning with the string ERROR. The NodeManager spawns the script periodically and checks its output. If the script’s output contains the string ERROR, as described above, the node’s status is reported as unhealthy and the node is black-listed by the ResourceManager. No further tasks will be assigned to this node. However, the NodeManager continues to run the script, so that if the node becomes healthy again, it will be removed from the blacklisted nodes on the ResourceManager automatically. The node’s health along with the output of the script, if it is unhealthy, is available to the administrator in the ResourceManager web interface. The time since the node was healthy is also displayed on the web interface.</font>
+> Administrators can determine if the node is in a healthy state by performing any checks of their choice in the script. If the script detects the node to be in an unhealthy state, it must print a line to standard output beginning with the string ERROR. The NodeManager spawns the script periodically and checks its output. If the script’s output contains the string ERROR, as described above, the node’s status is reported as unhealthy and the node is black-listed by the ResourceManager. No further tasks will be assigned to this node. However, the NodeManager continues to run the script, so that if the node becomes healthy again, it will be removed from the blacklisted nodes on the ResourceManager automatically. The node’s health along with the output of the script, if it is unhealthy, is available to the administrator in the ResourceManager web interface. The time since the node was healthy is also displayed on the web interface.
 
 Hadoop 提供了一种机制，**管理员可以通过该机制配置 NodeManager，以周期性地运行管理员的脚本，以确定节点是否健康**。
 
@@ -244,7 +244,7 @@ Hadoop 提供了一种机制，**管理员可以通过该机制配置 NodeManage
 
 web 界面上还显示了节点正常运行以来的时间。
 
-<font color="grey">The following parameters can be used to control the node health monitoring script in etc/hadoop/yarn-site.xml.</font>
+> The following parameters can be used to control the node health monitoring script in etc/hadoop/yarn-site.xml.
 
 可以在 `etc/hadoop/yarn-site.xml` 中，配置如下参数控制节点健康状态。
 
@@ -259,11 +259,11 @@ yarn.nodemanager.health-checker.script.timeout-ms | Node health script timeout i
 
 并**在达到属性 `yarn.nodemanager.disk-health-checker.min-healthy-disks` 设置的坏目录数量的阈值之后，整个节点被标记为不健康，此信息也被发送到资源管理器**。启动磁盘被攻击，或者在健康检查器脚本标识的启动磁盘中的故障。
 
-<font color="grey">The health checker script is not supposed to give ERROR if only some of the local disks become bad. NodeManager has the ability to periodically check the health of the local disks (specifically checks nodemanager-local-dirs and nodemanager-log-dirs) and after reaching the threshold of number of bad directories based on the value set for the config property yarn.nodemanager.disk-health-checker.min-healthy-disks, the whole node is marked unhealthy and this info is sent to resource manager also. The boot disk is either raided or a failure in the boot disk is identified by the health checker script.</font>
+> The health checker script is not supposed to give ERROR if only some of the local disks become bad. NodeManager has the ability to periodically check the health of the local disks (specifically checks nodemanager-local-dirs and nodemanager-log-dirs) and after reaching the threshold of number of bad directories based on the value set for the config property yarn.nodemanager.disk-health-checker.min-healthy-disks, the whole node is marked unhealthy and this info is sent to resource manager also. The boot disk is either raided or a failure in the boot disk is identified by the health checker script.
 
 ## 6、Slaves File
 
-<font color="grey">List all worker hostnames or IP addresses in your etc/hadoop/workers file, one per line. Helper scripts (described below) will use the etc/hadoop/workers file to run commands on many hosts at once. It is not used for any of the Java-based Hadoop configuration. In order to use this functionality, ssh trusts (via either passphraseless ssh or some other means, such as Kerberos) must be established for the accounts used to run Hadoop.</font>
+> List all worker hostnames or IP addresses in your etc/hadoop/workers file, one per line. Helper scripts (described below) will use the etc/hadoop/workers file to run commands on many hosts at once. It is not used for any of the Java-based Hadoop configuration. In order to use this functionality, ssh trusts (via either passphraseless ssh or some other means, such as Kerberos) must be established for the accounts used to run Hadoop.
 
 **在 `etc/hadoop/workers` 文件中列出所有 worker 主机名或 IP 地址，每行一个。**
 
@@ -273,8 +273,8 @@ yarn.nodemanager.health-checker.script.timeout-ms | Node health script timeout i
 
 ## 7、Hadoop Rack Awareness
 
-<font color="grey">Many Hadoop components are rack-aware and take advantage of the network topology for performance and safety. Hadoop daemons obtain the rack information of the workers in the cluster by invoking an administrator configured module. See the [Rack Awareness documentation](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/RackAwareness.html) for more specific information.
-It is highly recommended configuring rack awareness prior to starting HDFS.</font>
+> Many Hadoop components are rack-aware and take advantage of the network topology for performance and safety. Hadoop daemons obtain the rack information of the workers in the cluster by invoking an administrator configured module. See the [Rack Awareness documentation](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/RackAwareness.html) for more specific information.
+It is highly recommended configuring rack awareness prior to starting HDFS.
 
 许多 Hadoop 组件都是支持机架感知的，并利用网络拓扑来提高性能和安全性。
 
@@ -284,7 +284,7 @@ Hadoop 守护进程通过调用管理员配置的模块来获取集群中 worker
 
 ## 8、Logging
 
-<font color="grey">Hadoop uses the Apache log4j via the Apache Commons Logging framework for logging. Edit the etc/hadoop/log4j.properties file to customize the Hadoop daemons’ logging configuration (log-formats and so on).</font>
+> Hadoop uses the Apache log4j via the Apache Commons Logging framework for logging. Edit the etc/hadoop/log4j.properties file to customize the Hadoop daemons’ logging configuration (log-formats and so on).
 
 Hadoop 通过 Apache Commons 日志框架使用 Apache log4j 进行日志记录。
 
@@ -298,15 +298,15 @@ Hadoop 通过 Apache Commons 日志框架使用 Apache log4j 进行日志记录�
 
 在大多数安装中，HDFS 进程以 'HDFS' 的形式执行。YARN 通常使用 'yarn' 账户。
 
-<font color="grey">Once all the necessary configuration is complete, distribute the files to the HADOOP_CONF_DIR directory on all the machines. This should be the same directory on all machines.</font>
+> Once all the necessary configuration is complete, distribute the files to the HADOOP_CONF_DIR directory on all the machines. This should be the same directory on all machines.
 
-<font color="grey">In general, it is recommended that HDFS and YARN run as separate users. In the majority of installations, HDFS processes execute as ‘hdfs’. YARN is typically using the ‘yarn’ account.</font>
+> In general, it is recommended that HDFS and YARN run as separate users. In the majority of installations, HDFS processes execute as ‘hdfs’. YARN is typically using the ‘yarn’ account.
 
 ### 9.1、Hadoop Startup
 
-<font color="grey">To start a Hadoop cluster you will need to start both the HDFS and YARN cluster.</font>
+> To start a Hadoop cluster you will need to start both the HDFS and YARN cluster.
 
-<font color="grey">The first time you bring up HDFS, it must be formatted. Format a new distributed filesystem as hdfs:</font>
+> The first time you bring up HDFS, it must be formatted. Format a new distributed filesystem as hdfs:
 
 启动 hadoop 集群，需要启动 HDFS 和 YARN 集群。
 
@@ -314,49 +314,49 @@ Hadoop 通过 Apache Commons 日志框架使用 Apache log4j 进行日志记录�
 
 	[hdfs]$ $HADOOP_HOME/bin/hdfs namenode -format <cluster_name>
 
-<font color="grey">Start the HDFS NameNode with the following command on the designated node as hdfs:</font>
+> Start the HDFS NameNode with the following command on the designated node as hdfs:
 
 在指定为 hdfs 的节点上，启动 HDFS NameNode：
 
 	[hdfs]$ $HADOOP_HOME/bin/hdfs --daemon start namenode
 
-<font color="grey">Start a HDFS DataNode with the following command on each designated node as hdfs:</font>
+> Start a HDFS DataNode with the following command on each designated node as hdfs:
 
 在指定为 hdfs 的节点上，启动 HDFS DataNode：
 
 	[hdfs]$ $HADOOP_HOME/bin/hdfs --daemon start datanode
 
-<font color="grey">If `etc/hadoop/workers` and ssh trusted access is configured (see [Single Node Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)), all of the HDFS processes can be started with a utility script. As hdfs:</font>
+> If `etc/hadoop/workers` and ssh trusted access is configured (see [Single Node Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)), all of the HDFS processes can be started with a utility script. As hdfs:
 
 如果配置了 `etc/hadoop/workers` 和 SSH 信任，所有 HDFS 进程都可以使用一个脚本启动：
 
 	[hdfs]$ $HADOOP_HOME/sbin/start-dfs.sh
 
-<font color="grey">Start the YARN with the following command, run on the designated ResourceManager as yarn:</font>
+> Start the YARN with the following command, run on the designated ResourceManager as yarn:
 
 使用以下命令启动 YARN ，并在指定的 ResourceManager 上作为 YARN 运行：
 
 	[yarn]$ $HADOOP_HOME/bin/yarn --daemon start resourcemanager
 
-<font color="grey">Run a script to start a NodeManager on each designated host as yarn:</font>
+> Run a script to start a NodeManager on each designated host as yarn:
 
 在每个指定的主机上，作为 yarn 启动一个 NodeManager
 
 	[yarn]$ $HADOOP_HOME/bin/yarn --daemon start nodemanager
 
-<font color="grey">Start a standalone WebAppProxy server. Run on the WebAppProxy server as yarn. If multiple servers are used with load balancing it should be run on each of them:</font>
+> Start a standalone WebAppProxy server. Run on the WebAppProxy server as yarn. If multiple servers are used with load balancing it should be run on each of them:
 
 启动一个独立的 WebAppProxy 服务器。作为 yarn 在 WebAppProxy 服务器上运行。如果使用多个服务器进行负载平衡，则应该在每个服务器上运行：
 
 	[yarn]$ $HADOOP_HOME/bin/yarn --daemon start proxyserver
 
-<font color="grey">If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the YARN processes can be started with a utility script. As yarn:</font>
+> If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the YARN processes can be started with a utility script. As yarn:
 
 如果配置了 `etc/hadoop/workers` 和 SSH 信任，所有 YARN 进程都可以使用一个脚本启动：
 
 	[yarn]$ $HADOOP_HOME/sbin/start-yarn.sh
 
-<font color="grey">Start the MapReduce JobHistory Server with the following command, run on the designated server as mapred:</font>
+> Start the MapReduce JobHistory Server with the following command, run on the designated server as mapred:
 
 用下面的命令启动 MapReduce JobHistory Server，在指定的服务器上以 mapred 的形式运行:
 
@@ -364,35 +364,35 @@ Hadoop 通过 Apache Commons 日志框架使用 Apache log4j 进行日志记录�
 
 ### 9.2、Hadoop Shutdown
 
-<font color="grey">Stop the NameNode with the following command, run on the designated NameNode as hdfs:</font>
+> Stop the NameNode with the following command, run on the designated NameNode as hdfs:
 
 	[hdfs]$ $HADOOP_HOME/bin/hdfs --daemon stop namenode
 
-<font color="grey">Run a script to stop a DataNode as hdfs:</font>
+> Run a script to stop a DataNode as hdfs:
 
 	[hdfs]$ $HADOOP_HOME/bin/hdfs --daemon stop datanode
 
-<font color="grey">If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the HDFS processes may be stopped with a utility script. As hdfs:</font>
+> If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the HDFS processes may be stopped with a utility script. As hdfs:
 
 	[hdfs]$ $HADOOP_HOME/sbin/stop-dfs.sh
 
-<font color="grey">Stop the ResourceManager with the following command, run on the designated ResourceManager as yarn:</font>
+> Stop the ResourceManager with the following command, run on the designated ResourceManager as yarn:
 
 	[yarn]$ $HADOOP_HOME/bin/yarn --daemon stop resourcemanager
 
-<font color="grey">Run a script to stop a NodeManager on a worker as yarn:</font>
+> Run a script to stop a NodeManager on a worker as yarn:
 
 	[yarn]$ $HADOOP_HOME/bin/yarn --daemon stop nodemanager
 
-<font color="grey">If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the YARN processes can be stopped with a utility script. As yarn:</font>
+> If etc/hadoop/workers and ssh trusted access is configured (see Single Node Setup), all of the YARN processes can be stopped with a utility script. As yarn:
 
 	[yarn]$ $HADOOP_HOME/sbin/stop-yarn.sh
 
-<font color="grey">Stop the WebAppProxy server. Run on the WebAppProxy server as yarn. If multiple servers are used with load balancing it should be run on each of them:</font>
+> Stop the WebAppProxy server. Run on the WebAppProxy server as yarn. If multiple servers are used with load balancing it should be run on each of them:
 
 	[yarn]$ $HADOOP_HOME/bin/yarn stop proxyserver
 
-<font color="grey">Stop the MapReduce JobHistory Server with the following command, run on the designated server as mapred:</font>
+> Stop the MapReduce JobHistory Server with the following command, run on the designated server as mapred:
 
 	[mapred]$ $HADOOP_HOME/bin/mapred --daemon stop historyserver
 

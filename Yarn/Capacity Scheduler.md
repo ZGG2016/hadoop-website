@@ -1,5 +1,7 @@
 # Hadoop: Capacity Scheduler
 
+[TOC]
+
 ## 1、Purpose
 
 CapacityScheduler是一种可插拔的Hadoop调度器，它允许多租户安全地共享一个大型集群，从而在资源分配有限的条件下适时的为应用程序分配资源。

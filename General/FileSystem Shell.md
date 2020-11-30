@@ -2,15 +2,15 @@
 
 [TOC]
 
-#### appendToFile
+#### appendToFile 
 
-Usage: <font color="red">hadoop fs -appendToFile <localsrc> ... <dst></font>
+	hadoop fs -appendToFile <localsrc> ... <dst>
 
 将本地文件系统的单个文件或多个文件，追加到目标文件系统。
 
 也可以从标准输入中读取，再追加到目标文件系统。
 
-<font color="grey">Append single src, or multiple srcs from local file system to the destination file system. Also reads input from stdin and appends to destination file system.</font>
+> Append single src, or multiple srcs from local file system to the destination file system. Also reads input from stdin and appends to destination file system.
 
 	hadoop fs -appendToFile localfile /user/hadoop/hadoopfile
 		
@@ -33,19 +33,19 @@ hello hadoop spark hello flink hadoop hadoop
 aa cc bb aa cc dd
 ```
 
-#### cat
+#### cat 
 
-Usage: <font color="red">hadoop fs -cat [-ignoreCrc] URI [URI ...]</font>
+	hadoop fs -cat [-ignoreCrc] URI [URI ...]
 
 将源路径复制到标准输出
 
-<font color="grey">Copies source paths to stdout.</font>
+> Copies source paths to stdout.
 
 Options：
 
 - -ignoreCrc: 取消 checkshum 验证功能。
 
-<font color="grey">The -ignoreCrc option disables checkshum verification.</font>
+> The -ignoreCrc option disables checkshum verification.
 
 Example:
 
@@ -57,9 +57,9 @@ Exit Code:
 
 	Returns 0 on success and -1 on error.
 
-#### rm
+#### rm 
 
-Usage: <font color="red">hadoop fs -rm [-f] [-r |-R] [-skipTrash] [-safely] URI [URI ...]</font>
+	hadoop fs -rm [-f] [-r |-R] [-skipTrash] [-safely] URI [URI ...]
 
 删除指定文件。
 
@@ -67,13 +67,13 @@ Usage: <font color="red">hadoop fs -rm [-f] [-r |-R] [-skipTrash] [-safely] URI 
 
 当前 trash 默认是关闭的，可以设置 `fs.trash.interval`(core-site.xml) 为一个大于0的值来启用。
 
-<font color="grey">Delete files specified as args.</font>
+> Delete files specified as args.
 
-<font color="grey">If trash is enabled, file system instead moves the deleted file to a trash directory (given by [FileSystem#getTrashRoot](https://hadoop.apache.org/docs/r3.2.1/api/org/apache/hadoop/fs/FileSystem.html)).</font>
+> If trash is enabled, file system instead moves the deleted file to a trash directory (given by [FileSystem#getTrashRoot](https://hadoop.apache.org/docs/r3.2.1/api/org/apache/hadoop/fs/FileSystem.html)).
 
-<font color="grey">Currently, the trash feature is disabled by default. User can enable trash by setting a value greater than zero for parameter fs.trash.interval (in core-site.xml).</font>
+> Currently, the trash feature is disabled by default. User can enable trash by setting a value greater than zero for parameter fs.trash.interval (in core-site.xml).
 
-<font color="grey">See [expunge](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#expunge) about deletion of files in trash.</font>
+> See [expunge](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#expunge) about deletion of files in trash.
 
 Options:
 
@@ -87,15 +87,15 @@ Options:
 
  - -safely: 当删除的目录包含的文件总数量超过 `hadoop.shell.delete.limit.num.files`(in core-site.xml, default: 100)时，删除前会进行安全验证。它可以与`-skipTrash`一起使用，以防止意外删除大型目录。在确认之前递归遍历大目录以计算要删除的文件数量时，会出现延迟。
 
-<font color="grey">The -f option will not display a diagnostic message or modify the exit status to reflect an error if the file does not exist.
+> The -f option will not display a diagnostic message or modify the exit status to reflect an error if the file does not exist.
+
+> The -R option deletes the directory and any content under it recursively.
 	
-The -R option deletes the directory and any content under it recursively.
+> The -r option is equivalent to -R.
 	
-The -r option is equivalent to -R.
+> The -skipTrash option will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
 	
-The -skipTrash option will bypass trash, if enabled, and delete the specified file(s) immediately. This can be useful when it is necessary to delete files from an over-quota directory.
-	
-The -safely option will require safety confirmation before deleting directory with total number of files greater than hadoop.shell.delete.limit.num.files (in core-site.xml, default: 100). It can be used with -skipTrash to prevent accidental deletion of large directories. Delay is expected when walking over large directory recursively to count the number of files to be deleted before the confirmation.</font>
+> The -safely option will require safety confirmation before deleting directory with total number of files greater than hadoop.shell.delete.limit.num.files (in core-site.xml, default: 100). It can be used with -skipTrash to prevent accidental deletion of large directories. Delay is expected when walking over large directory recursively to count the number of files to be deleted before the confirmation.
 
 Example:
 
@@ -105,12 +105,12 @@ Exit Code:
 
 	Returns 0 on success and -1 on error.
 
-#### text
+#### text 
 
-Usage: <font color="red">hadoop fs -text <src></font>
+	hadoop fs -text <src>
 
 获取源文件并以文本格式输出该文件。
 
 允许的格式是 zip 和 TextRecordInputStream。
 
-<font color="red">Takes a source file and outputs the file in text format. The allowed formats are zip and TextRecordInputStream.</font>
+> Takes a source file and outputs the file in text format. The allowed formats are zip and TextRecordInputStream.

@@ -2,13 +2,13 @@
 
 [TOC]
 
-## 一、Overview
+## 1、Overview
 
 Hadoop archives 是特殊的档案格式。**一个 Hadoop archive 对应一个文件系统目录**。其扩展名是 `*.har`。
 一个 Hadoop archive 目录包含元数据 `形式是_index和 _masterindex` 和 数据 `part-*`文件。
 `_index` 文件包含了档案中的文件的文件名和位置信息。
 
-## 二、How to Create an Archive
+## 2、How to Create an Archive
 
 用法: 
 
@@ -29,7 +29,7 @@ Here `/foo/bar` is the parent path and `a/b/c, e/f/g` are relative paths to pare
 如果 har 文件不在加密空间，将会以解密后的形式存储。
 如果 har 文件在加密空间，将会以加密的形式存储。
 
-## 三、How to Look Up Files in Archives
+## 3、How to Look Up Files in Archives
 
 archive 作为文件系统层暴露给外界。所以所有的 fs shell 命令都能在 archive 上运行，
 但是要使用不同的 URI。另外，archive 是不可改变的。所以重命名，删除和创建
@@ -41,7 +41,7 @@ archive 作为文件系统层暴露给外界。所以所有的 fs shell 命令�
 
 	har:///archivepath/fileinarchive
 
-## 四、How to Unarchive an Archive
+## 4、How to Unarchive an Archive
 
 解档：
 
@@ -51,9 +51,9 @@ archive 作为文件系统层暴露给外界。所以所有的 fs shell 命令�
 
 	hadoop distcp har:///user/zoo/foo.har/dir1 hdfs:/user/zoo/newdir
 
-## 五、Archives Examples
+## 5、Archives Examples
 
-### 1、Creating an Archive
+### 5.1、Creating an Archive
 
 	hadoop archive -archiveName foo.har -p /user/hadoop -r 3 dir1 dir2 /user/zoo
 	hadoop archive -archiveName foo.har -p /root/userr/hadoop -r 1 dir1 dir2 /in
@@ -61,7 +61,7 @@ archive 作为文件系统层暴露给外界。所以所有的 fs shell 命令�
 `/user/hadoop/dir1` 和 `/user/hadoop/dir2` 将被归档到 `/user/zoo/foo.har`。
 归档并不会自动删除输入文件。如果想在归档后删除，只能手动删。
 
-### 2、Looking Up Files
+### 5.2、Looking Up Files
 
 归档后，可以通过如下命令查看档案中的文件：
 
@@ -93,7 +93,7 @@ Notice that the archived files have been archived relative to /user/
 rather than /user/hadoop.
 
 
-## 六、Hadoop Archives and MapReduce
+## 6、Hadoop Archives and MapReduce
 
 如果在 hdfs 中有一个归档文件 `/user/zoo/foo.har`，那么你就可以将其作为 MapReduce
 的输入，所有你需要的数据均在这个目录下 `har:///user/zoo/foo.har`。Hadoop Archives

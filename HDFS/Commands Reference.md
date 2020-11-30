@@ -4,15 +4,17 @@
 
 ## 1、Overview
 
-<font color="grey">All HDFS commands are invoked by the bin/hdfs script. Running the hdfs script without any arguments prints the description for all commands.</font>
+> All HDFS commands are invoked by the bin/hdfs script. Running the hdfs script without any arguments prints the description for all commands.
 
 所有 HDFS 命令都是由 `bin/hdfs` 脚本调用。不加参数的运行 hdfs 脚本会打印所有命令的描述信息。
 
-Usage: <font color="red">hdfs [SHELL_OPTIONS] COMMAND [GENERIC_OPTIONS] [COMMAND_OPTIONS]</font>
+Usage: 
+
+    hdfs [SHELL_OPTIONS] COMMAND [GENERIC_OPTIONS] [COMMAND_OPTIONS]
 
 Hadoop 有一个选项解析框架，它使用解析通用选项和运行类。
 
-<font color="grey">Hadoop has an option parsing framework that employs parsing generic options as well as running classes.</font>
+> Hadoop has an option parsing framework that employs parsing generic options as well as running classes.
 
 COMMAND_OPTIONS  |  Description
 ---|:---
@@ -51,15 +53,15 @@ COMMAND_OPTION | Description
 -runDuringUpgrade | Whether to run the balancer during an ongoing HDFS upgrade. This is usually not desired since it will not affect used space on over-utilized machines.【是否在正在升级的HDFS中运行平衡器。这通常是不希望的，因为它不会影响过度使用的机器上的已用空间】
 -h|--help	 | Display the tool usage and help information and exit.
 
-<font color="grey">Runs a cluster balancing utility. An administrator can simply press Ctrl-C to stop the rebalancing process. See [Balancer](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Balancer) for more details.</font>
+> Runs a cluster balancing utility. An administrator can simply press Ctrl-C to stop the rebalancing process. See [Balancer](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Balancer) for more details.
 
 运行集群均衡工具，管理员可以 Ctrl-C 停止正均衡的进程。
 
 blockpool 模式比 datanode 模式更严格。
 
-<font color="grey">Note that the blockpool policy is more strict than the datanode policy.</font>
+> Note that the blockpool policy is more strict than the datanode policy.
 
-<font color="grey">Besides the above command options, a pinning feature is introduced starting from 2.7.0 to prevent certain replicas from getting moved by balancer/mover. This pinning feature is disabled by default, and can be enabled by configuration property “dfs.datanode.block-pinning.enabled”. When enabled, this feature only affects blocks that are written to favored nodes specified in the create() call. This feature is useful when we want to maintain the data locality, for applications such as HBase regionserver.</font>
+> Besides the above command options, a pinning feature is introduced starting from 2.7.0 to prevent certain replicas from getting moved by balancer/mover. This pinning feature is disabled by default, and can be enabled by configuration property “dfs.datanode.block-pinning.enabled”. When enabled, this feature only affects blocks that are written to favored nodes specified in the create() call. This feature is useful when we want to maintain the data locality, for applications such as HBase regionserver.
 
 除了上述命令选项外，从 2.7.0 开始引入了一个固定特性，以防止某些副本被均衡器/移动器移动。
 

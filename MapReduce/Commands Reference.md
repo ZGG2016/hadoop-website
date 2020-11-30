@@ -4,7 +4,7 @@
 
 #### job
 
-<font color="grey">Command to interact with Map Reduce Jobs.</font>
+> Command to interact with Map Reduce Jobs.
 
 和 Map Reduce Jobs 交互的命令。
 

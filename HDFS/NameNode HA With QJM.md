@@ -338,7 +338,7 @@ Now that your HA NameNodes are configured and started, you will have access to s
 
 ### 7.1、Introduction
 
-上边的部分描述了如果配置一个手工故障转移。在那种模式下，系统将不会自动触发一个故障转移，将一个 NameNode 从 Active 装成 Standby ，即使 Active 节点已经失效。这个部分描述了如何配置和部署一个自动故障转移。
+上边的部分描述了如何配置一个手工故障转移。在那种模式下，系统将不会自动触发一个故障转移，将一个 NameNode 从 Active 装成 Standby ，即使 Active 节点已经失效。这个部分描述了如何配置和部署一个自动故障转移。
 
 ### 7.2、Components
 

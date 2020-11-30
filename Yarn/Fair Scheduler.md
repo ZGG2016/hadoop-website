@@ -1,5 +1,7 @@
 # Hadoop:Fair Scheduler
 
+[TOC]
+
 ## 1、Purpose
 
 FairScheduler 是一个允许 YARN 应用程序公平共享集群资源的可拔插的调度器。

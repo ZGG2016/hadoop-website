@@ -1,6 +1,6 @@
 # Architecture
 
-v3.2.1
+[TOC]
 
 ## 1、简介
 
