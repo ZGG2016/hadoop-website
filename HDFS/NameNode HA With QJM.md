@@ -62,7 +62,7 @@ NameNode 的位置，**发送块的位置信息和心跳给他们**。
 		运行 N 个 JournalNode，系统就能最多容忍 (N - 1) / 2  个机器故障，保持功能正常。
 
 在HA集群中，**Standby NameNodes 也会执行 checkpoints 过程**。所以在 HA 集群中不需要运行
-SecondryNameNode、CheckpointNode、BackupNode。 In fact, to do so would be an error(???). 
+SecondryNameNode、CheckpointNode、BackupNode。 事实上，如果设置了这些节点，会出现错误。 
 这也允许将非HA集群重新配置成HA集群，这样就可以重用 Secondary NameNode 所在的机器资源。
 
 ## 6、Deployment  部署
