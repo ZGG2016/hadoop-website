@@ -24,6 +24,17 @@ COMMAND COMMAND_OPTIONS  |  Various commands with their options are described in
 
 ## 2、User Commands
 
+
+### dfs
+
+Usage: 
+
+    hdfs dfs [COMMAND [COMMAND_OPTIONS]]
+
+在 hadoop 支持的文件系统上运行一个文件系统命令。
+
+> Run a filesystem command on the file system supported in Hadoop. The various COMMAND_OPTIONS can be found at [File System Shell Guide](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html).
+
 ## 3、Administration Commands
 
 
@@ -83,5 +94,65 @@ COMMAND_OPTION | Description
 -refreshNodes | Re-read the hosts and exclude files to update the set of Datanodes that are allowed to connect to the Namenode and those that should be decommissioned or recommissioned.【重新读取主机并排除文件，以更新允许连接到Namenode的Datanodes，以及应该退役或重新启用的Datanodes。】
 -refreshServiceAcl  |  Reload the service-level authorization policy file.
 
+### diskbalancer
+
+Usage:
+
+   hdfs diskbalancer
+     [-plan <datanode> -fs <namenodeURI>]
+     [-execute <planfile>]
+     [-query <datanode>]
+     [-cancel <planfile>]
+     [-cancel <planID> -node <datanode>]
+     [-report -node <file://> | [<DataNodeID|IP|Hostname>,...]]
+     [-report -node -top <topnum>]
+
+COMMAND_OPTION | Description
+---|:---
+-plan     | Creates a disbalancer plan
+-execute  |  Executes a given plan on a datanode
+-query    |  Gets the current diskbalancer status from a datanode
+-cancel   | Cancels a running plan
+-report   | Reports the volume information from datanode(s)
+
+> Runs the diskbalancer CLI. See [HDFS Diskbalancer](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html) for more information on this command.
+
+运行 diskbalancer CLI
+
+### haadmin
+
+Usage:
+
+    hdfs haadmin -transitionToActive <serviceId> [--forceactive]
+    hdfs haadmin -transitionToStandby <serviceId>
+    hdfs haadmin -transitionToObserver <serviceId>
+    hdfs haadmin -failover [--forcefence] [--forceactive] <serviceId> <serviceId>
+    hdfs haadmin -getServiceState <serviceId>
+    hdfs haadmin -getAllServiceState
+    hdfs haadmin -checkHealth <serviceId>
+    hdfs haadmin -help <command>
+
+COMMAND_OPTION        | Description
+---|:---
+-checkHealth          |  check the health of the given NameNode【检查指定NameNode的健康状态】
+-failover             | initiate a failover between two NameNodes【启动两个namenode间的故障切换】
+-getServiceState      |  determine whether the given NameNode is Active or Standby【确定给定的NameNode是Active还是Standby】
+-getAllServiceState   |  returns the state of all the NameNodes【返回所有namenode的状态】
+-transitionToActive   |  transition the state of the given NameNode to Active (Warning: No fencing is done)【将指定的NameNode状态转换为Active(警告:没有fencing is done)】
+-transitionToStandby  |   transition the state of the given NameNode to Standby (Warning: No fencing is done)【将指定的NameNode状态转换到Standby(警告:没有fencing is done)】
+-transitionToObserver |  transition the state of the given NameNode to Observer (Warning: No fencing is done)【将给定的NameNode状态转换到观察者(警告:没有fencing is done)】
+-help [cmd]           | Displays help for the given command or all commands if none is specified.【显示指定命令或所有命令的帮助。】
+
+See [HDFS HA with NFS](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithNFS.html#Administrative_commands) or [HDFS HA with QJM](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#Administrative_commands) for more information on this command.
+
+### journalnode
+
+Usage: 
+
+    hdfs journalnode
+
+启动一个journalnode。
+
+> This comamnd starts a journalnode for use with [HDFS HA with QJM](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#Administrative_commands).
 
 ## 4、Debug Commands
