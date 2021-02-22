@@ -84,13 +84,15 @@ blockpool 模式比 datanode 模式更严格。
 
 Usage:
 	
-	...
-	hdfs dfsadmin [-refreshNodes]
-	...
-	hdfs dfsadmin [-refreshServiceAcl]
+    hdfs dfsadmin [-report [-live] [-dead] [-decommissioning] [-enteringmaintenance] [-inmaintenance]]
+    ...
+    hdfs dfsadmin [-refreshNodes]
+    ...
+    hdfs dfsadmin [-refreshServiceAcl]
 
 COMMAND_OPTION | Description
 ---|:---
+`-report [-live] [-dead] [-decommissioning] [-enteringmaintenance] [-inmaintenance]`  | Reports basic filesystem information and statistics, The dfs usage can be different from “du” usage, because it measures raw space used by replication, checksums, snapshots and etc. on all the DNs. Optional flags may be used to filter the list of displayed DataNodes.【报告基本的文件系统信息和统计信息，dfs 用法可能与“du”用法不同，因为它度量所有DNs上的副本、校验和、快照等所使用的原始空间。可选标志可用于过滤显示的datanode列表。】
 -refreshNodes | Re-read the hosts and exclude files to update the set of Datanodes that are allowed to connect to the Namenode and those that should be decommissioned or recommissioned.【重新读取主机并排除文件，以更新允许连接到Namenode的Datanodes，以及应该退役或重新启用的Datanodes。】
 -refreshServiceAcl  |  Reload the service-level authorization policy file.
 
@@ -154,5 +156,41 @@ Usage:
 启动一个journalnode。
 
 > This comamnd starts a journalnode for use with [HDFS HA with QJM](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#Administrative_commands).
+
+### namenode
+
+Usage:
+
+    hdfs namenode [-backup] |
+          [-checkpoint] |
+          [-format [-clusterid cid ] [-force] [-nonInteractive] ] |
+          [-upgrade [-clusterid cid] [-renameReserved<k-v pairs>] ] |
+          [-upgradeOnly [-clusterid cid] [-renameReserved<k-v pairs>] ] |
+          [-rollback] |
+          [-rollingUpgrade <rollback |started> ] |
+          [-importCheckpoint] |
+          [-initializeSharedEdits] |
+          [-bootstrapStandby [-force] [-nonInteractive] [-skipSharedEditsCheck] ] |
+          [-recover [-force] ] |
+          [-metadataVersion ]
+
+COMMAND_OPTION        | Description
+---|:---
+-backup  |  Start backup node. 【启动备份节点】
+-checkpoint | Start checkpoint node. 【启动checkpoint节点】
+-format [-clusterid cid]  |  Formats the specified NameNode. It starts the NameNode, formats it and then shut it down. Will throw NameNodeFormatException if name dir already exist and if reformat is disabled for cluster.【格式化指定的NameNode。它启动NameNode，格式化它，然后关闭它。如果name dir已存在，并且集群的重新格式化被禁用，将抛出NameNodeFormatException，】
+`-upgrade [-clusterid cid] [-renameReserved <k-v pairs>]` | Namenode should be started with upgrade option after the distribution of new Hadoop version.【在新的Hadoop版本发布之后，应该带有upgrade选项来启动Namenode】
+`-upgradeOnly [-clusterid cid] [-renameReserved <k-v pairs>]` | Upgrade the specified NameNode and then shutdown it.【更新指定的NameNode，然后关闭它。】
+-rollback | Rollback the NameNode to the previous version. This should be used after stopping the cluster and distributing the old Hadoop version.【回滚NameNode到先前的版本。这应该在停止集群、分发旧的Hadoop版本之后使用。】
+`-rollingUpgrade <rollback|started>` |   See [Rolling Upgrade document](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsRollingUpgrade.html#NameNode_Startup_Options) for the detail.
+-importCheckpoint | Loads image from a checkpoint directory and save it into the current one. Checkpoint dir is read from property dfs.namenode.checkpoint.dir【从checkpoint目录载入映像，并将其存储到当前的节点。checkpoint目录从`dfs.namenode.checkpoint.dir`指定的目录下读取】
+-initializeSharedEdits  | Format a new shared edits dir and copy in enough edit log segments so that the standby NameNode can start up.【格式化一个新的共享编辑目录，并复制足够的编辑日志片段，以便可以启动备用NameNode。】
+`-bootstrapStandby [-force] [-nonInteractive] [-skipSharedEditsCheck]` |  Allows the standby NameNode’s storage directories to be bootstrapped by copying the latest namespace snapshot from the active NameNode. This is used when first configuring an HA cluster. The option `-force` or `-nonInteractive` has the same meaning as that described in namenode `-format` command. `-skipSharedEditsCheck` option skips edits check which ensures that we have enough edits already in the shared directory to start up from the last checkpoint on the active.【允许备用NameNode的存储目录可以通过从活跃NameNode复制最新的命名空间快照来引导。这在首次配置HA集群时使用。选项`-force`或`-nonInteractive`与namenode`-format`命令中描述的含义相同。`-skipSharedEditsCheck`选项跳过edits检查，这确保我们在共享目录中已经有足够的edits，可以从活跃NameNode的最后一个检查点启动。】
+-recover [-force] | Recover lost metadata on a corrupt filesystem. See [HDFS User Guide](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Recovery_Mode) for the detail.【恢复在损坏的文件系统上丢失的元数据。】
+-metadataVersion  | Verify that configured directories exist, then print the metadata versions of the software and the image.【验证已配置的目录是否存在，然后打印软件和映像的元数据版本。】
+
+> Runs the namenode. More info about the upgrade and rollback is at [Upgrade Rollback](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Upgrade_and_Rollback).
+
+运行 namenode。升级和回退的更多信息在 Upgrade Rollback。
 
 ## 4、Debug Commands
