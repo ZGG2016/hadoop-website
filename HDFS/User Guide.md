@@ -84,11 +84,11 @@ HDFS Architecture Guide 对 HDFS 有详细的描述。本用户指南主要介�
 
 > Checkpoint node: performs periodic checkpoints of the namespace and helps minimize the size of the log stored at the NameNode containing changes to the HDFS. Replaces the role previously filled by the Secondary NameNode, though is not yet battle hardened. The NameNode allows multiple Checkpoint nodes simultaneously, as long as there are no Backup nodes registered with the system.
 
-- Checkpoint node：执行命名空间的周期性检查点，帮助最小化存储在 NameNode 上的日志大小，其中日志包含了对 HDFS 的更改。取代了以前由 Secondary NameNode 所扮演的角色，尽管还没有经过战斗的磨练。NameNode 允许同时有多个 Checkpoint nodes，只要没有向系统注册 Backup nodes。
+- i. Checkpoint node：执行命名空间的周期性检查点，帮助最小化存储在 NameNode 上的日志大小，其中日志包含了对 HDFS 的更改。取代了以前由 Secondary NameNode 所扮演的角色，尽管还没有经过战斗的磨练。NameNode 允许同时有多个 Checkpoint nodes，只要没有向系统注册 Backup nodes。
 
 > Backup node: An extension to the Checkpoint node. In addition to checkpointing it also receives a stream of edits from the NameNode and maintains its own in-memory copy of the namespace, which is always in sync with the active NameNode namespace state. Only one Backup node may be registered with the NameNode at once.
 
-- Backup node：对 Checkpoint node 的扩展。除了进行 checkpoint 之外，它还接收来自 NameNode 的 edits 流，并维护自己的名称空间的内存副本，该副本始终与活跃的 NameNode 名称空间状态同步。NameNode 一次只能注册一个 Backup node。
+- j. Backup node：对 Checkpoint node 的扩展。除了进行 checkpoint 之外，它还接收来自 NameNode 的 edits 流，并维护自己的名称空间的内存副本，该副本始终与活跃的 NameNode 名称空间状态同步。NameNode 一次只能注册一个 Backup node。
 
 ## 3、Prerequisites
 
