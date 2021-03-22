@@ -16,7 +16,7 @@
 
 HDFS 是 Hadoop 应用程序使用的主要的分布式存储。
 
-一个 HDFS 集群主要由一个 NameNode 和 DataNodes 组成，NameNode 负责管理文件系统元数据，DataNodes 负责存储实际数据。
+一个 HDFS 集群主要**由一个 NameNode 和 DataNodes 组成，NameNode 负责管理文件系统元数据，DataNodes 负责存储实际数据**。
 
 HDFS Architecture Guide 对 HDFS 有详细的描述。本用户指南主要介绍用户和管理员与 HDFS 集群的交互。HDFS 架构图描述了 NameNode、DataNodes 和客户端之间的基本交互。客户端和 NameNode 通信获取文件元数据或修改文件，直接和 DataNodes 通信执行实际的文件I/O。
 
@@ -123,7 +123,7 @@ Hadoop 包括各种类似 shell 的命令，它们直接与 HDFS 和 Hadoop 支�
 
 `bin/hdfs dfs -help` 命令列出了 Hadoop shell 支持的命令。`bin/hdfs dfs -help command-name` 命令可以显示命令的详细帮助。
 
-这些命令支持大多数正常的文件系统操作，如复制文件、更改文件权限等。它还支持一些 HDFS 特定的操作，如更改文件复制。有关更多信息，请参见文件系统Shell指南。
+**这些命令支持大多数正常的文件系统操作，如复制文件、更改文件权限等。它还支持一些 HDFS 特定的操作，如更改文件复制**。有关更多信息，请参见文件系统 Shell 指南。
 
 ### 5.1、DFSAdmin Command
 
