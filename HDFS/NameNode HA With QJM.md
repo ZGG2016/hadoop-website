@@ -1,8 +1,6 @@
-# HDFS High Availability Using the Quorum Journal Manager   高可用性(QJM) 
+# HDFS High Availability Using the Quorum Journal Manager
 
 [TOC]
-
-**v3.2.1**
 
 ## 1、Purpose
 
