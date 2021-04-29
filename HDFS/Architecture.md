@@ -172,9 +172,9 @@ DFSAdmin 命令用来管理HDFS集群。这些命令只有HDSF的管理员才能
 
 ### 11.1、File Deletes and Undeletes
 
-**启用trash后，当用户或应用程序通过 FS Shell 删除某个文件时，这个文件并没有立刻从HDFS中删除。实际上，HDFS会将这个文件重命名转移到/trash目录**。只要文件还在/trash目录中，该文件就可以被迅速地恢复。（每个用户都有自己的trash目录/user/<username>/.Trash）。文件在/trash中保存的时间是可配置的，当超过这个时间时，Namenode就会将该文件从名字空间中删除。删除文件会使得该文件相关的数据块被释放。注意，从用户删除文件到HDFS空闲空间的增加之间会有一定时间的延迟。
+**启用trash后，当用户或应用程序通过 FS Shell 删除某个文件时，这个文件并没有立刻从HDFS中删除。实际上，HDFS会将这个文件重命名转移到/trash目录**。只要文件还在/trash目录中，该文件就可以被迅速地恢复。（每个用户都有自己的trash目录`/user/<username>/.Trash`）。文件在/trash中保存的时间是可配置的，当超过这个时间时，Namenode就会将该文件从名字空间中删除。删除文件会使得该文件相关的数据块被释放。注意，从用户删除文件到HDFS空闲空间的增加之间会有一定时间的延迟。
 
-在配置的时间间隔内，HDFS 会在trash 目录下为文件创建 checkpoints(/user/<username>/.Trash/<date>)，当它们失效时，就会删除旧的 checkpoints。See expunge command of FS shell about checkpointing of trash.
+在配置的时间间隔内，HDFS 会在trash 目录下为文件创建 checkpoints(`/user/<username>/.Trash/<date>`)，当它们失效时，就会删除旧的 checkpoints。See expunge command of FS shell about checkpointing of trash.
 
 在trash中的生命周期结束后，NameNode 就会从名字空间删除文件。删除文件会释放与该文件关联的块。注意，在用户删除文件的时间和HDFS中空闲空间相应增加的时间之间可能存在明显的时间延迟。
 
