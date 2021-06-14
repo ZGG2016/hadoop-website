@@ -30,23 +30,14 @@ hdfs 的高可用性就解决了上述的两个问题，方法是在同一集群
 
 ## 4、Architecture
 
-一个 HA 集群，配置两个或更多独立的机器作为 NameNode 节点。**在任意时刻，一个处在 Active 状态，其他的处在 Standyby 状态**。
-Active NameNode负责处理客户端操作，Standyby NameNode 仅仅作为一个工作节点维持自身足够的状态，
-在必要时候，实现 fast failover。
+一个 HA 集群，配置两个或更多独立的机器作为 NameNode 节点。**在任意时刻，一个处在 Active 状态，其他的处在 Standyby 状态**。Active NameNode 负责处理客户端操作，Standyby NameNode 仅仅作为一个工作节点维持自身足够的状态，在必要时候，实现快速故障转移。
 
-两类 NameNode 通过一组 JournalNodes(JNs) 进程保持通信，以此使 Standy NameNode 和 Active NameNode
-保持同步。当 Active 节点操作命名空间时，会将操作日志 **持久化到JNs进程上**。而 Standby 节点会
-**持续监控JNs 进程，当日志更新时，读取 JNs 上的日志，将其应用到自己的命名空间上**。Standy 节点
-升级为 Active 节点前，会确保从 JournalNodes 读取了所有的日志。这就保证了 failover 发生前 Standy 
-节点与 Active 节点命名空间状态保持同步。
+两类 NameNode 通过一组 JournalNodes(JNs) 进程保持通信，以此使 Standy NameNode 和 Active NameNode 保持同步。当 Active 节点操作命名空间时，会将操作日志 **持久化到JNs进程上**。而 Standby 节点会
+**持续监控JNs 进程，当日志更新时，读取 JNs 上的日志，将其应用到自己的命名空间上**。Standy 节点升级为 Active 节点前，会确保从 JournalNodes 读取了所有的日志。这就保证了 failover 发生前 Standy 节点与 Active 节点命名空间状态保持同步。
 
-为了实现了 fast failover，Standy 节点需要知道块位置的最新信息。为了实现这个，DataNode会配置所有
-NameNode 的位置，**发送块的位置信息和心跳给他们**。
+为了实现快速故障转移，Standy 节点需要知道块位置的最新信息。为了实现这个，**DataNode 会有所有 NameNode 的位置，并发送块的位置信息和心跳给它们**。
 
-保持集群在一时间点仅有一个 Active NameNode 是非常重要的。否则命名空间被划分成了两部分，会数据丢失
-或出现其他错误结果的风险。为了确保这个性质和阻止 "split_brain scenario"，**JournalNodes 在一时间点仅允许一个 NameNode 成为 writer。**
-在 failover 期间，Active NameNode 是仅有的可以往 JournalNodes 写数据的 NameNode。这就有效阻止了
-其他 NameNode 继续保持 Active 状态，允许新的 Active NameNode 安全的处理 failover。
+保持集群在一时间点仅有一个 Active NameNode 是非常重要的。否则命名空间被划分成了两部分，会数据丢失或出现其他错误结果的风险。为了确保这个性质和阻止 "split_brain scenario"，**JournalNodes 在一时间点仅允许一个 NameNode 成为 writer。**在故障转移期间，Active NameNode 是仅有的可以往 JournalNodes 写数据的 NameNode。这就有效阻止了其他 NameNode 继续保持 Active 状态，允许新的 Active NameNode 安全的处理故障转移。
 
 ## 5、Hardware resources  硬件资源
 
@@ -59,19 +50,22 @@ NameNode 的位置，**发送块的位置信息和心跳给他们**。
 		这就允许系统能容忍单台机器的故障。你也可以允许超多3个，但 JNs 进程数最好设成奇数个。
 		运行 N 个 JournalNode，系统就能最多容忍 (N - 1) / 2  个机器故障，保持功能正常。
 
-在HA集群中，**Standby NameNodes 也会执行 checkpoints 过程**。所以在 HA 集群中不需要运行
-SecondryNameNode、CheckpointNode、BackupNode。 事实上，如果设置了这些节点，会出现错误。 
+在HA集群中，**Standby NameNodes 也会执行 checkpoints 过程**。所以在 HA 集群中不需要运行 SecondryNameNode、CheckpointNode、BackupNode。
+
+事实上，如果设置了这些节点，会出现错误。
+
 这也允许将非HA集群重新配置成HA集群，这样就可以重用 Secondary NameNode 所在的机器资源。
 
 ## 6、Deployment  部署
 
 ### 6.1、Configuration overview
 
-和 Federation 配置类似，HA 配置向后兼容，可以使已存在的单个 NameNode 配置不需修改就可以工作。
-一个新的配置特点就是集群中的所有节点都有相同的配置。
+和 Federation 配置类似，HA 配置向后兼容，可以使已存在的单个 NameNode 配置不需修改就可以工作。一个新的配置特点就是集群中的所有节点都有相同的配置。
 
-和 HDFS Federation 一样，HA 集群也使用 **nameservice ID 识别一个 HDFS 实例** ，that may in fact consist of multiple HA NameNodes。
+和 HDFS Federation 一样，HA 集群也使用 **nameservice ID 识别一个 HDFS 实例** ，一个 HDFS 实例可能由多个 HA NameNodes 组成。
+
 新增加了一个 NameNode ID 的概念。**集群中的每个 NameNode 都有一个独立的NameNode ID**。
+
 为了支持所有的NameNode 使用相同的配置文件，相关的配置参数都以 nameservice ID 和 NameNode ID 做后缀。
 
 ### 6.2、Configuration details
@@ -80,8 +74,8 @@ SecondryNameNode、CheckpointNode、BackupNode。 事实上，如果设置了这
 
 配置的属性的顺序不重要。但是要先配置的 `dfs.nameservices` 和 `dfs.ha.namenodes.[nameservice ID]` 
 
-- dfs.nameservices：**新的 nameservice 的逻辑名称**，例如"mycluster"。这个名称用在配置文件中，
-或作为 HDFS 路径的一部分(as the authority component of absolute HDFS paths in the cluster.)
+- dfs.nameservices：**新的 nameservice 的逻辑名称**，例如"mycluster"。这个名称用在配置文件中，或作为 HDFS 路径的一部分(as the authority component of absolute HDFS paths in the cluster.)
+
 注意：如果也在使用 HDFS federation，这个配置的设置应该包含其他 nameservices，用逗号分隔。
 
 ```xml
@@ -159,7 +153,7 @@ SecondryNameNode、CheckpointNode、BackupNode。 事实上，如果设置了这
 
 - dfs.client.failover.proxy.provider.[nameservice ID] : **HDFS 客户端用来连接 Active NameNode 的 Java 类**
 
-配置被 DFS 客户端用来决定哪一个 NameNode 当前是 Active，从而决定哪一个 NameNode 目前服务于客户端请求。目前只有两个实现，ConfiguredFailoverProxyProvider and the RequestHedgingProxyProvider ，(对于第一个调用，并发地调用所有的 namenode 以确定 Active namenode，并在随后的请求中调用 Active namenode，直到发生故障转移)所以除非你用了自定义的类否则就用其中之一。例如：
+配置被 DFS 客户端用来决定哪一个 NameNode 当前是 Active，从而决定哪一个 NameNode 目前服务于客户端请求。目前只有两个实现，ConfiguredFailoverProxyProvider 和 the RequestHedgingProxyProvider ，(对于第一个调用，并发地调用所有的 namenode 以确定 Active namenode，并在随后的请求中调用 Active namenode，直到发生故障转移)所以除非你用了自定义的类否则就用其中之一。例如：
 
 ```xml
 <property>
@@ -170,8 +164,7 @@ SecondryNameNode、CheckpointNode、BackupNode。 事实上，如果设置了这
 
 - dfs.ha.fencing.methods: **脚本或 Java 类的列表，用来在故障转移中保护 Active NameNode**
 
-在任意时刻只有一个 Active NameNode，这对系统的正确性是可取的。当使用 Quorum Journal Manager 时，仅有一个 NameNode 写入到 JournalNodes。所以对 split-brain 场景下，不会存在损坏文件系统元数据的可能。然而，当发生故障转移时，前一个 Active NameNode 仍然有可能处理客户端的读请求，这些请求可能已经过时，但直到 NameNode 在尝试写入 JournalNodes 时才会关闭。
-因为这个原因，即使在使用 QJM 的时候，配置 fencing methods 也是值得的。然而，为了提高系统在 fencing 机制失效时的可用性，建议在列表的最后配置一个总是返回 success 的 fencing method 。注意，如果你选择使用不真实的方法，你仍然需要为此配置些东西，例如，shell(/bin/true)。
+在任意时刻只有一个 Active NameNode，这对系统的正确性是可取的。当使用 Quorum Journal Manager 时，仅有一个 NameNode 写入到 JournalNodes。所以对 split-brain 场景下，不会存在损坏文件系统元数据的可能。然而，当发生故障转移时，前一个 Active NameNode 仍然有可能处理客户端的读请求，这些请求可能已经过时，但直到 NameNode 在尝试写入 JournalNodes 时才会关闭。因为这个原因，即使在使用 QJM 的时候，配置 fencing methods 也是值得的。然而，为了提高系统在 fencing 机制失效时的可用性，建议在列表的最后配置一个总是返回 success 的 fencing method 。注意，如果你选择使用不真实的方法，你仍然需要为此配置些东西，例如，shell(/bin/true)。
 
 故障转移期间，使用的 fencing methods 被配置为回车分隔的列表，它们将顺序的被尝试直到一个显示 fencing 已经成功。有两个与 Hadoop 运行的方式：shell 和 sshfence 。关于管多的实现你自定义的 fencing method，查看org.apache.hadoop.ha.NodeFencer类。For information on implementing your own custom fencing method, see the org.apache.hadoop.ha.NodeFencer class.
 
@@ -293,11 +286,11 @@ Now that your HA NameNodes are configured and started, you will have access to s
 	    [-checkHealth <serviceId>]
 	    [-help <command>]
 
-本指南描述这些子命令的高级用法。对于每一个子命令特殊的用法的信息，你应该运行 hdfs haadmin -help <command> 来获得。
+本指南描述这些子命令的高级用法。对于每一个子命令特殊的用法的信息，你应该运行 `hdfs haadmin -help <command>` 来获得。
 
 - transitionToActive 和 transitionToStandby：**将给定的 NameNode 转变为 Active 或者 Standby**
 
-这两个子命令使给定的 NameNode 各自转到 Active 或者 Standby 状态。这两个命令不会尝试运行任何的 fence，因此不应该经常使用。你应该更倾向于用 hdfs haadmin -failover 命令。
+这两个子命令使给定的 NameNode 各自转到 Active 或者 Standby 状态。这两个命令不会尝试运行任何的 fence，因此不应该经常使用。你应该更倾向于用 `hdfs haadmin -failover` 命令。
 
 - failover ：**在两个 NameNode 之间发起一次故障转移**
 
