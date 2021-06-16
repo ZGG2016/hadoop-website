@@ -24,6 +24,26 @@ COMMAND COMMAND_OPTIONS  |  Various commands with their options are described in
 
 ## 2、User Commands
 
+### classpath
+
+Usage: 
+
+    hdfs classpath [--glob |--jar <path> |-h |--help]
+
+COMMAND_OPTION  | Description
+---|:---
+--glob          | expand wildcards
+--jar path      | write classpath as manifest in jar named path
+-h, --help      | print help
+
+> Prints the class path needed to get the Hadoop jar and the required libraries. If called without arguments, then prints the classpath set up by the command scripts, which is likely to contain wildcards in the classpath entries. Additional options print the classpath after wildcard expansion or write the classpath into the manifest of a jar file. The latter is useful in environments where wildcards cannot be used and the expanded classpath exceeds the maximum supported command line length.
+
+打印所需的类路径，以得到 hadoop jar 和所要求的库。
+
+如果在没有参数的情况下调用，则打印由命令脚本设置的类路径，类路径条目中可能包含通配符。
+
+其他选项在通配符展开后打印类路径，或者将类路径写入 jar 文件的清单中。后者在不能使用通配符且扩展的类路径超过了支持的最大命令行长度的环境中非常有用。
+
 
 ### dfs
 
@@ -34,6 +54,39 @@ Usage:
 在 hadoop 支持的文件系统上运行一个文件系统命令。
 
 > Run a filesystem command on the file system supported in Hadoop. The various COMMAND_OPTIONS can be found at [File System Shell Guide](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html).
+
+### fsck
+
+Usage:
+
+    hdfs fsck <path>
+          [-list-corruptfileblocks |
+          [-move | -delete | -openforwrite]
+          [-files [-blocks [-locations | -racks | -replicaDetails | -upgradedomains]]]
+          [-includeSnapshots] [-showprogress]
+          [-storagepolicies] [-maintenance]
+          [-blockId <blk_Id>]
+
+COMMAND_OPTION | Description
+---|:---
+path           | Start checking from this path.【从这个路径开始检查】
+-delete        | Delete corrupted files.【删除损坏文件】
+-files         | Print out files being checked.【打印正在检查的文件。】
+-files -blocks | Print out the block report【打印块报告】
+-files -blocks -locations | Print out locations for every block.【打印每个块的位置】
+-files -blocks -racks     | Print out network topology for data-node locations.【打印data-node位置的网络拓扑】
+-files -blocks -replicaDetails |  Print out each replica details.【打印每个副本详情】
+-files -blocks -upgradedomains |  Print out upgrade domains for every block.【】
+-includeSnapshots | Include snapshot data if the given path indicates a snapshottable directory or there are snapshottable directories under it.【如果给定的路径指示一个可拍照目录，或者该目录下有可拍照目录，则包含拍照数据】
+-list-corruptfileblocks | Print out list of missing blocks and files they belong to.【打印它们所属的缺失的块和文件】
+-move  |  Move corrupted files to /lost+found.【将损坏的文件移动到/lost+found目录】
+-openforwrite | Print out files opened for write.【打印待写的打开的文件】
+-showprogress | Print out dots for progress in output. Default is OFF (no progress).
+-storagepolicies  |  Print out storage policy summary for the blocks.【打印块的存储策略概要】
+-maintenance | Print out maintenance state node details.
+-blockId     | Print out information about the block.
+
+> Runs the HDFS filesystem checking utility. See [fsck](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#fsck) for more info.
 
 ## 3、Administration Commands
 
